@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript par la pratique</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Bootstrap 4.5 CSS-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <!-- Bootstrap JS Requirements -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="row justify-content-center align-self-center">
+      <video src="https://www.youtube.com/watch?v=7PytKD8eVRA" id="player" class="border border-primary d-inline-flex p-3 ml-4 w-50 mt-4"></video>
+    </div>
+    <div class="row justify-content-center align-self-center mt-4">
+      <fieldset>
+        <legend>Controle vidéo</legend>
+      <div>
+        <button type="button" class="btn btn-outline-primary" id="btnPlay">Play</button>
+        <button type="button" class="btn btn-outline-danger" id="btnStop">Stop</button>
+      </div>
+      <input type="range" id="speedSlider" min="0.5" max="2" value="1" step="0.1" class="ml-4">
+      <span id="speed">1x</span>
+      <input type="range" step="1" id="seekbar" value="0" class="ml-4"> Chercher 
+      </fieldset>
+    </div>
+    
+  </div>
+
+  <script>
+    const player = document.querySelector('#player');
+    const speedSlider = document.querySelector('#speedSlider');
+    const speed = document.querySelector('#speed');
+    const seekbar = document.querySelector('#seekbar');
+    const btnPlay = document.querySelector('#btnPlay');
+    const btnStop = document.querySelector('#btnStop');
+
+    // Play vidéo
+    btnPlay.addEventListener('click', (evt) => {
+      if(player.paused){
+        player.play();
+        btnPlay.innerText = 'Pause';
+      } else {
+        player.pause();
+        btnPlay.innerText = 'Play';
+      }
+    });
+    // Stop vidéo
+    btnStop.addEventListener('click', (evt) => {
+      player.currentTime = 0;
+      player.pause();
+      btnPlay.innerText = 'Play';
+    });
+
+    // Adjust vidéo speed
+    speedSlider.addEventListener('change', (evt) => {
+      const value = evt.target.value;
+      speed.innerText = `${value}x`;
+      player.playbackRate = value;
+    });
+    // SeekVideo
+    seekbar.addEventListener('change', () => {
+     player.currentTime = seekbar.value;
+    });
+    // UpdateSeekbar
+    seekbar.addEventListener('timeupdate', () => {
+      seekbar.value = video.currentTime;
+    });
+
+    player.addEventListener('durationchange', setupSeekbar);
+    player.addEventListener('canplay', () => {
+      setupSeekbar();
+      player.volume = 0.5;
+    });
+
+    player.addEventListener('ended', () => {
+      if(player.paused) {
+       btnPlay.innerText = 'Play';
+      }
+    });
+
+    function setupSeekbar(evt){
+     seekbar.max = player.duration;
+    }
+
+  </script>
+</body>
+</html>
